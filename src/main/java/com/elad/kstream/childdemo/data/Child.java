@@ -1,9 +1,11 @@
 package com.elad.kstream.childdemo.data;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 /**
  * Created by eladw on 4/11/18.
  */
-public class Child {
+public class Child implements Identity<String>{
 
     private String id;
     private int age;
@@ -72,5 +74,10 @@ public class Child {
         sb.append(", hight=").append(hight);
         sb.append('}');
         return sb.toString();
+    }
+
+    @JsonIgnore
+    public String getKey() {
+        return this.id;
     }
 }

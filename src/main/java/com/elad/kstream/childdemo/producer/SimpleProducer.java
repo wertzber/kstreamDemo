@@ -2,18 +2,16 @@ package com.elad.kstream.childdemo.producer;
 
 
 import com.elad.kstream.childdemo.data.Child;
+import com.elad.kstream.childdemo.data.Identity;
 import net.andreinc.mockneat.MockNeat;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.Producer;
 import org.apache.kafka.clients.producer.ProducerRecord;
 
-import java.util.Arrays;
 import java.util.Properties;
 import java.util.UUID;
+import java.util.stream.IntStream;
 
-/**
- * Created by vladif on 06/01/2018.
- */
 public class SimpleProducer {
 
     private static final int NUMBER_EVENTS_TO_PRODUCE=10;
@@ -23,31 +21,35 @@ public class SimpleProducer {
 
 
     public static void main(String[] args) throws InterruptedException {
-
-        start();
-
+       start();
        for (int i= 0; i < NUMBER_EVENTS_TO_PRODUCE; i++) {
-           Child child = createChild();
-           produce(child,child.getId(),5, TARGET_TEST_TOPIC);
+           createChildWrapper(TARGET_TEST_TOPIC);
        }
-
        close();
+    }
+
+    private static void createChildWrapper(String topic) {
+        Child child = createChild();
+        produce(child, topic);
     }
 
     public static void start(){
         init();
     }
 
-    public static < K, T> void produce( T record, String key, int numIter, String topic){
+    public static void producerLooper(int numOfIter, String topic){
+        for(int i=0; i<numOfIter; i++){
+            createChildWrapper(topic);
+        }
+    }
 
-        for(int i = 0; i < numIter; i++) {
-            producer.send(new ProducerRecord(topic, key, record));
-            try {
-                Thread.sleep(100);
-            } catch (InterruptedException e) {
-                //e.printStackTrace();
-                throw new RuntimeException(e.getMessage());
-            }
+    public static < K, T extends Identity> void produce(T record, String topic){
+
+        producer.send(new ProducerRecord(topic, record.getKey(), record));
+        try {
+            Thread.sleep(100);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e.getMessage());
         }
     }
 

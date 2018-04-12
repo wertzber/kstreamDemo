@@ -7,9 +7,7 @@ import org.apache.kafka.common.serialization.Serializer;
 
 import java.util.Map;
 
-/**
- * Created by vladif on 12/01/2018.
- */
+
 public class ChildSerde implements Serde<Child> {
 
     public void configure(Map<String, ?> configs, boolean isKey) {
