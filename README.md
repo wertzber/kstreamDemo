@@ -1,4 +1,4 @@
-# kafka-streams-tech
+# kafka-streams  - basic tutorial
 Kafka streams for developers. All you need to build microservices. 
 
 ## Prerequisites 
@@ -15,16 +15,11 @@ Start Kafka server : $KAFKA_HOME/bin/kafka-server-start.sh $KAFKA_HOME/config/se
 
 Check in the logs (console) both ZK and Kafka started properly
 
-## Introduction to Stream Processing 
-[Quick introduction to Stream Processing](https://docs.google.com/presentation/d/1s32b-_upP3-J2XabYlHsRp45iG5R0lzaXtLXISXI6G4/edit#slide=id.g2e3217117f_0_64)
+## Start zk local 
+[kstream example](http://vishnuviswanath.com/kafka-streams-part2.html)
 
 ### Part1. Kafka-Stream DSL. 
-####Stateless topologies
-Some use cases doesn't require state. For example if all you need is to filter, or/and modify records values - all you need it just stateless topology.
-Some examples of stateless stream transformations : 
-`map`,`mapValues`,`filter`,`flatMap`,`flatMapValues`,`branch`,`foreach`,`print`,etc..
-##### First simplest stateless toplogy
-This topology changes input stream. Every text record in the stream it changes to uppercase and appends *"Hello"* to every record.
+
 ###### How to run
    1. Start ZK server : $KAFKA_HOME/bin/zookeeper-server-start.sh $KAFKA_HOME/config/zookeeper.properties
    2. Start Kafka server : $KAFKA_HOME/bin/kafka-server-start.sh $KAFKA_HOME/config/server.properties
@@ -57,48 +52,8 @@ This topology changes input stream. Every text record in the stream it changes t
    6. Run the topology and type some messages in the producer terminal (you can run the topology from Intellij)
    
 
-Exercise : Add a filter , filtering out all null or empty records. Hint: use `filter` method :-) 
 
-The **second example** shows how to read and process LivePerson `LPEvent`(avro). 
 
-Take a look into `serdes` folder. These are the examples of `LPEvent` serializer and deserialzer classes
-
-We use these classes in the setting Kafka Streams topology:
-   
-    config.put(StreamsConfig.DEFAULT_KEY_SERDE_CLASS_CONFIG, Serdes.String().getClass());
-   
-    config.put(StreamsConfig.DEFAULT_VALUE_SERDE_CLASS_CONFIG, LPEventSerde.class);
-
-This way you should define default serdes for your Kafka topology. 
-But if you need to change the default serdes within the stream processing code you have to use overloaded methods (almost all methods  are overlaoded with the serdes generics)
-
-Other very important point to take a look is 
-
-    config.put(StreamsConfig.DEFAULT_TIMESTAMP_EXTRACTOR_CLASS_CONFIG, LogAndNotSkipOnInvalidTimestamp.class);
-    
-`LogAndNotSkipOnInvalidTimestamp` class goal is to extract message (event) timestamp. It's cruicial for (time) window based (stateful) processing. By default Kafka streams will use the message injestion time.  
-
-**Next example** `BranchExampleTopology` shows the example of staless `branch` method. 
-According to the predefined predicates we split input stream of jsons
-
-Anoter point to pay attention is using json serdes and overloaded method `stream` getting as a parameter json serdes 
-
-    JsonSerializer<PersonalInfo> personalInfoJsonSerializer = new JsonSerializer<>();
-    JsonDeserializer<PersonalInfo> personalInfoJsonDeserializer = new JsonDeserializer<>(PersonalInfo.class);
-    Serde<PersonalInfo> personalInfoSerde = Serdes.serdeFrom(personalInfoJsonSerializer,personalInfoJsonDeserializer );
-   
-    KStream<String,PersonalInfo> kstreams = builder.stream(Serdes.String(), personalInfoSerde, "input_topic");
-    branches[0].transformValues(()-> new PersonalInfoTransformer()).print(); 
-    
-**And finally** in this example take a look `transformValues`method. It allows you to run any code (transformation) message by message within stream. 
-
-**This method has access to the local state so you can do easily enrichment of your events** for example. But about that in the next sessions.
-
-In order to run this example you should run `SimpleProducer`, which writes events in format json into topic `input_topic`
-
-Last example is `MySecondTopology` which is short intro inti Kafka Streams stateful processing, which we cover in the next session 
-The methods to pay attention here are `groupByKey` and `count`
- 
  
 
 
