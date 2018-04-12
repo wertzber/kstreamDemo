@@ -15,7 +15,7 @@ Start Kafka server : $KAFKA_HOME/bin/kafka-server-start.sh $KAFKA_HOME/config/se
 
 Check in the logs (console) both ZK and Kafka started properly
 
-## Start zk local 
+## Link 
 [kstream example](http://vishnuviswanath.com/kafka-streams-part2.html)
 
 ### Part1. Kafka-Stream DSL. 
