@@ -35,6 +35,17 @@ public class ChildSummary {
 
         childKTable.toStream().print("childSummary");
 
+        //example 1 - add filter for age and then print.
+        //childKTable.filter((k,v) -> v.getAge()>10).toStream().print("filter 10");
+
+        //example 2 - groupby
+        //[firstName]: Luciana, 1
+        //[firstName]: Maxwell, 1
+        //[firstName]: Merlin, 2
+        //KTable<String, Long> firstNamesCount = childKTable.toStream()
+        //.groupBy((k,v)->v.getFirstName(), Serdes.String(), new ChildSerde()).count();
+        //firstNamesCount.toStream().print("firstName");
+
         KafkaStreams streams = new KafkaStreams(builder,config);
         streams.start();
 

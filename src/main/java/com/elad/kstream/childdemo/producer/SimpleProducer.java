@@ -14,7 +14,7 @@ import java.util.stream.IntStream;
 
 public class SimpleProducer {
 
-    private static final int NUMBER_EVENTS_TO_PRODUCE=10;
+    private static final int NUMBER_EVENTS_TO_PRODUCE=100;
     private static final String TARGET_TEST_TOPIC="input_topic";
     private static MockNeat mock = MockNeat.old();
     private static Producer producer;
