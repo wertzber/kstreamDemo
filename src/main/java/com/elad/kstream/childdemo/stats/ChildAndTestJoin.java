@@ -49,31 +49,26 @@ public class ChildAndTestJoin {
 
         JoinWindows oneMinuteWindow = JoinWindows.of(60 * 1000);
 
-        testBranch[0].join(childAgeBranch[0],
-                new ValueJoiner<TestResult, Child, ChildHightTest>() {
-
-            @Override
-            public ChildHightTest apply(TestResult testResult, Child child) {
-                ChildHightTest join = new ChildHightTest();
-                join.setGrade(testResult.getGrade());
-                join.setCategory(testResult.getCategory());
-                join.setId(child.getId());
-                join.setAge(child.getAge());
-                join.setHight(child.getHight());
-                return join;
-            }
-        }
+        testBranch[0].join(childAgeBranch[0], childAndTestResultJoiner
+//                new ValueJoiner<TestResult, Child, ChildHightTest>() {
+//
+//            @Override
+//            public ChildHightTest apply(TestResult testResult, Child child) {
+//                ChildHightTest join = new ChildHightTest();
+//                join.setGrade(testResult.getGrade());
+//                join.setCategory(testResult.getCategory());
+//                join.setId(child.getId());
+//                join.setAge(child.getAge());
+//                join.setHight(child.getHight());
+//                return join;
+//            }
+//        }
         ,oneMinuteWindow
         ,Serdes.String()
         ,testResultSerde
         ,childSerde).print("join");
 
-//        final KStream<String, ChildAndTestJoin> joinRes = childAgeBranch[0].join(testBranch[0]
-//                ,childAndTestResultJoiner
-//                ,oneMinuteWindow
-//                ,Serdes.String()
-//                ,childSerde
-//                ,testResultSerde);
+
 
 
         KafkaStreams streams = new KafkaStreams(builder,config);

@@ -7,10 +7,10 @@ import org.apache.kafka.streams.kstream.ValueJoiner;
 /**
  * Created by eladw on 4/15/18.
  */
-public class ChildAndTestResultJoiner implements ValueJoiner<Child, TestResult, ChildHightTest> {
+public class ChildAndTestResultJoiner implements ValueJoiner<TestResult, Child, ChildHightTest> {
 
     @Override
-    public ChildHightTest apply(Child child, TestResult testResult) {
+    public ChildHightTest apply(TestResult testResult, Child child) {
         System.out.println("Start join on id " + child.getId() + " test result id: " + testResult.getChildId());
         ChildHightTest join = new ChildHightTest();
         join.setGrade(testResult.getGrade());
