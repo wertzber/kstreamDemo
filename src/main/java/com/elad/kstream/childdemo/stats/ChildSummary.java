@@ -1,7 +1,7 @@
 package com.elad.kstream.childdemo.stats;
 
 import com.elad.kstream.childdemo.data.Child;
-import com.elad.kstream.childdemo.producer.SimpleProducer;
+import com.elad.kstream.childdemo.producer.ChildProducer;
 import com.elad.kstream.childdemo.serde.ChildSerde;
 import org.apache.kafka.common.serialization.Serdes;
 import org.apache.kafka.streams.KafkaStreams;
@@ -42,19 +42,18 @@ public class ChildSummary {
         //[firstName]: Luciana, 1
         //[firstName]: Maxwell, 1
         //[firstName]: Merlin, 2
-        //KTable<String, Long> firstNamesCount = childKTable.toStream()
-        //.groupBy((k,v)->v.getFirstName(), Serdes.String(), new ChildSerde()).count();
-        //firstNamesCount.toStream().print("firstName");
+        KTable<String, Long> firstNamesCount = childKTable.toStream()
+        .groupBy((k,v)->v.getFirstName(), Serdes.String(), new ChildSerde()).count();
+        firstNamesCount.toStream().print("firstName");
 
         KafkaStreams streams = new KafkaStreams(builder,config);
         streams.start();
 
-        SimpleProducer.start();
+        ChildProducer childProducer = new ChildProducer();
 
         //produce data into input topic
-        SimpleProducer.producerLooper(15, TOPIC);
+        childProducer.childProducerLooper(15, TOPIC);
 
-        SimpleProducer.close();
 
     }
 

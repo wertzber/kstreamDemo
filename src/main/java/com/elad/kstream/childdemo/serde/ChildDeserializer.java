@@ -21,7 +21,6 @@ public class ChildDeserializer implements Deserializer<Child>{
     }
 
     public Child deserialize(String topic, byte[] data) {
-
         Child retVal = null;
 
         try {
