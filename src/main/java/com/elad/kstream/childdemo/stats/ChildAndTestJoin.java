@@ -19,8 +19,8 @@ import java.util.Properties;
  * Created by eladw on 4/12/18.
  */
 public class ChildAndTestJoin {
-    public static final String TOPIC = "input_topic";
-    public static final String TOPIC2 = "input_topic3";
+    public static final String TOPIC = "child";
+    public static final String TOPIC2 = "testResult";
 
 
     public static void main(String[] args) throws InterruptedException {

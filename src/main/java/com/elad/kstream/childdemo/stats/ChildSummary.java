@@ -16,7 +16,7 @@ import java.util.Properties;
  */
 public class ChildSummary {
 
-    public static final String TOPIC = "input_topic";
+    public static final String TOPIC = "topic2";
     public static void main(String[] args) throws InterruptedException {
 
         Properties config = new Properties();
@@ -31,9 +31,9 @@ public class ChildSummary {
         KStreamBuilder builder = new KStreamBuilder();
         //KTable
         KTable<String, Child> childKTable = builder.table(Serdes.String(), new ChildSerde(),
-                TOPIC, "child-store");
+                        TOPIC, "child-store");
 
-        childKTable.toStream().print("childSummary");
+        //childKTable.toStream().print("childSummary-e1");
 
         //example 1 - add filter for age and then print.
         //childKTable.filter((k,v) -> v.getAge()>10).toStream().print("filter 10");
@@ -52,7 +52,7 @@ public class ChildSummary {
         ChildProducer childProducer = new ChildProducer();
 
         //produce data into input topic
-        childProducer.childProducerLooper(15, TOPIC);
+        childProducer.childProducerLooper(3, TOPIC);
 
 
     }
