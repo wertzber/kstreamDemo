@@ -8,11 +8,14 @@ public class ProducerTest {
     public static final String TOPIC2 = "testResult";
 
     public static void main(String[] args) {
-        ChildProducer childProducer = new ChildProducer();
-        childProducer.childProducerLooper(10, TOPIC);
+        while(1==1){
+            ChildProducer childProducer = new ChildProducer();
+            childProducer.childProducerLooper(10, TOPIC);
 
-        TestResultProducer testProducer = new TestResultProducer();
-        testProducer.testResultProducerLooper(5000, TOPIC2);
+            TestResultProducer testProducer = new TestResultProducer();
+            testProducer.testResultProducerLooper(50, TOPIC2);
+        }
+
     }
 
 }
