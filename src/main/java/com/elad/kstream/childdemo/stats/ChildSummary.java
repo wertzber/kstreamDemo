@@ -16,13 +16,14 @@ import java.util.Properties;
  */
 public class ChildSummary {
 
-    public static final String TOPIC = "topic2";
+    public static final String TOPIC = "topic4";
     public static void main(String[] args) throws InterruptedException {
 
         Properties config = new Properties();
-        config.put(StreamsConfig.APPLICATION_ID_CONFIG, "childSummary");
-        config.put(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
+        config.put(StreamsConfig.APPLICATION_ID_CONFIG, "e5");
+        config.put(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092,localhost:9093,localhost:9094");
         config.put(StreamsConfig.DEFAULT_KEY_SERDE_CLASS_CONFIG, Serdes.String().getClass());
+        config.put(StreamsConfig.REPLICATION_FACTOR_CONFIG, 3);
         //config.put(StreamsConfig.DEFAULT_VALUE_SERDE_CLASS_CONFIG, ChildSerde.class);
 
 
@@ -31,7 +32,7 @@ public class ChildSummary {
         KStreamBuilder builder = new KStreamBuilder();
         //KTable
         KTable<String, Child> childKTable = builder.table(Serdes.String(), new ChildSerde(),
-                        TOPIC, "child-store");
+                        TOPIC, "child-e5");
 
         //childKTable.toStream().print("childSummary-e1");
 

@@ -1,6 +1,8 @@
 package com.elad.kstream.childdemo.join;
 
+import com.elad.kstream.childdemo.data.Child;
 import com.elad.kstream.childdemo.data.Identity;
+import com.elad.kstream.childdemo.data.TestResult;
 
 /**
  * Created by eladw on 4/15/18.
@@ -14,6 +16,18 @@ public class ChildHightTest implements Identity<String>{
     private int grade;
 
     public ChildHightTest() {
+    }
+
+    public ChildHightTest(String id, int age, double hight, String category, int grade) {
+        this.id = id;
+        this.age = age;
+        this.hight = hight;
+        this.category = category;
+        this.grade = grade;
+    }
+
+    public static ChildHightTest createHightTestFromChildAndTest (Child child, TestResult testResultsult) {
+        return new ChildHightTest(child.getId(), child.getAge(), child.getHight(), testResultsult.getCategory(), testResultsult.getGrade());
     }
 
     public String getId() {
